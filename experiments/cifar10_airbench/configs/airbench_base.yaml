@@ -1,0 +1,54 @@
+experiment:
+  device: "cuda"
+  seed: null
+  compile_model: true
+  compile_mode: "max-autotune"
+  warmup: false
+  num_runs: 3
+  log_dir: "logs"
+
+data:
+  path: "cifar10"
+
+training:
+  batch_size: 2000
+  total_train_epochs: 20
+  whiten_bias_epochs: 3
+  label_smoothing: 0.2
+  augmentation:
+    flip: true
+    translate: 2
+
+optimizer:
+  fused: true
+  bias_lr: 0.053
+  head_lr: 0.67
+  wd_base: 2e-6
+  sgd_head_momentum: 0.85
+  sgd_head_nesterov: true
+  filter_lr: 0.24
+  filter_momentum: 0.6
+  filter_nesterov: true
+
+evaluation:
+  batch_size: 2000
+  val_tta_level: 0
+  final_tta_level: 2
+
+clipping:
+  enabled: false
+  type: "spectral_clip"
+  max_norm: 1.0
+  spectral_clip_mode: "const"
+  spectral_clip_method: "randomized_svd"
+  threshold: 1.0
+  r_max: 10
+  randomized_p: 5
+  randomized_n_iter: 1
+
+wandb:
+  enabled: false
+  project: "spectral-clipping-cifar10"
+  entity: null
+  run_name: null
+  tags: []

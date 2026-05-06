@@ -1,0 +1,30 @@
+project: spectral-clipping-cifar10
+name: SGDM no clip (bayes)
+program: experiments/cifar10_airbench/train.py
+method: bayes
+run_cap: 100
+
+metric:
+  name: sweep/mean_tta_val_acc
+  goal: maximize
+
+parameters:
+  wandb.enabled:
+    value: true
+
+  optimizer.filter_lr:
+    distribution: log_uniform_values
+    min: 0.01
+    max: 0.2
+
+  optimizer.filter_momentum:
+    distribution: uniform
+    min: 0.5
+    max: 0.95
+
+command:
+  - ${env}
+  - python3
+  - ${program}
+  - --config-name=sgdm_no_clip
+  - ${args_no_hyphens}

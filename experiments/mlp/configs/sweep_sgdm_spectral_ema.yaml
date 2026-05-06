@@ -1,0 +1,37 @@
+# wandb sweep: SGDM + spectral clipping (EMA threshold).
+# Bayesian search over lr only; EMA threshold is parameter-free besides ema_coef.
+
+project: spectral-clipping
+method: bayes
+name: "SGDM spectral EMA (search)"
+metric:
+  name: train/loss
+  goal: minimize
+
+parameters:
+  training.lr:
+    distribution: log_uniform_values
+    min: 0.0001
+    max: 0.1
+
+  optimizer.type:
+    value: sgd
+  optimizer.momentum:
+    value: 0.9
+
+  clipping.enabled:
+    value: true
+  clipping.type:
+    value: spectral_clip
+  clipping.spectral_clip_mode:
+    value: ema
+  clipping.ema_coef:
+    value: 0.9
+
+run_cap: 100
+
+command:
+  - ${env}
+  - python
+  - experiments/mlp/train.py
+  - ${args_no_hyphens}

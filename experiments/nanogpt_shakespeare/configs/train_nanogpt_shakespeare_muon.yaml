@@ -1,0 +1,6 @@
+defaults:
+  - train_base
+  - dataset: shakespeare_char
+  - model: nanogpt
+  - optimizer: muon
+  - _self_

@@ -1,0 +1,12 @@
+optimizer_name: sgdm
+learning_rate: 0.001
+momentum: 0.9
+weight_decay: 0.1
+
+spectral_clip:
+  enabled: false
+  mode: const
+  const_threshold: 1.0
+  r_max: 3
+  randomized_p: 5
+  randomized_n_iter: 2

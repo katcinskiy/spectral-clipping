@@ -1,0 +1,8 @@
+defaults:
+  - airbench_base
+  - _self_
+
+clipping:
+  enabled: true
+  type: "norm_clip"
+  max_norm: 1.0

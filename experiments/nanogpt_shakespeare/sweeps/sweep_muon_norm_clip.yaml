@@ -1,0 +1,29 @@
+name: Muon norm clip (bayes)
+project: spectral-clipping-nanogpt-shakespeare
+method: bayes
+metric:
+  name: Test Loss
+  goal: minimize
+
+parameters:
+  optimizer.learning_rate:
+    distribution: log_uniform_values
+    min: 0.0001
+    max: 0.1
+  optimizer.spectral_clip.enabled:
+    value: false
+  train.global_clip_value:
+    distribution: log_uniform_values
+    min: 0.01
+    max: 10.0
+
+run_cap: 300
+
+command:
+  - ${env}
+  - ${interpreter}
+  - ${program}
+  - --config-name
+  - train_nanogpt_shakespeare_muon
+  - ${args_no_hyphens}
+program: experiments/nanogpt_shakespeare/train.py

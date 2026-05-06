@@ -1,24 +1,35 @@
 # Spectral Clipping
 
-> **Status: WIP.**
+Code for the paper *Gradient Clipping Beyond Vector Norms: A Spectral Approach for Matrix-Valued Parameters*.
 
-Code accompanying the paper **Gradient Clipping Beyond Vector Norms: A Spectral Approach for Matrix-Valued Parameters**.
+Instead of rescaling a gradient by its $\ell_2$ norm, we clamp every singular value of the gradient matrix above a threshold $\tau$ down to $\tau$. The repo has three threshold strategies and four experiments that reproduce the figures in the paper.
 
-Drop-in gradient clipper that clamps singular values of each matrix-valued gradient above a threshold $\tau$, instead of rescaling by the $\ell_2$ norm.
-
-## Usage
+## Quick start
 
 ```python
-import torch
-from clipping import SpectralClipper
+from clipping import (
+    SpectralClipperConst,     # fixed threshold
+    SpectralClipperEMA,       # EMA of sigma_max
+    SpectralClipperQuantile,  # sliding-window quantile of sigma_max
+)
 
-model = ...  # any nn.Module
-clipper = SpectralClipper(model, threshold=1.0)
+clipper = SpectralClipperEMA(model, ema_coef=0.9)
 
 for batch in loader:
     loss = model(batch).loss
     loss.backward()
-    clipper.clip(model)        # in-place spectral clip on .grad
+    clipper.clip(model)
     optimizer.step()
     optimizer.zero_grad()
 ```
+
+Embedding-style parameters (`wte`, `wpe`, `embed_tokens`, `lm_head`, ...) are skipped by default. 
+
+## Experiments
+
+Each subfolder is self-contained (its own configs, sweep YAMLs, and entry-point script):
+
+- [`experiments/trace_regression`](experiments/trace_regression/) — synthetic trace regression. Reproduces the gradient-bias plot.
+- [`experiments/mlp`](experiments/mlp/) — small MLP under heavy-tailed Pareto noise. Compares SGDM with norm/spectral clipping against Adam baselines.
+- [`experiments/cifar10_airbench`](experiments/cifar10_airbench/) — CIFAR-10 on the airbench94 ResNet. Compares SGDM with no clipping, norm clipping, and spectral clipping.
+- [`experiments/nanogpt_shakespeare`](experiments/nanogpt_shakespeare/) — char-level nanoGPT on tiny-Shakespeare, with SGDM and Muon under norm vs spectral clipping.

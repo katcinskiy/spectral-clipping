@@ -1,0 +1,13 @@
+defaults:
+  - airbench_base
+  - _self_
+
+clipping:
+  enabled: true
+  type: "spectral_clip"
+  spectral_clip_mode: "const"
+  spectral_clip_method: "randomized_svd"
+  threshold: 1.0
+  r_max: 10
+  randomized_p: 5
+  randomized_n_iter: 1

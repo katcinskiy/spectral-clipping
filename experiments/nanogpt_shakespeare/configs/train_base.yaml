@@ -1,0 +1,19 @@
+train:
+  wandb_entity: null
+  wandb_project: spectral-clipping-nanogpt-shakespeare
+  wandb_name: nanogpt-shakespeare
+  wandb_enabled: true
+  train_steps: 10000
+  batch_size: 64
+  test_batch_size: 64
+  device: cuda
+  seed: null
+  torch_compile: false
+  gradient_accumulation_steps: 1
+  dataset_path: data
+  global_clip_value: 1.0
+  use_lr_scheduler: false
+  warmup_steps: 100
+  min_lr: 1e-4
+  val_iters: 250
+  val_steps: 100

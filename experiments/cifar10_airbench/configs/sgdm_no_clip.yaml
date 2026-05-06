@@ -1,0 +1,6 @@
+defaults:
+  - airbench_base
+  - _self_
+
+clipping:
+  enabled: false

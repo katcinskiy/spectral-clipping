@@ -1,0 +1,35 @@
+# wandb sweep: Adam + gradient-norm clipping. Bayesian search over (lr, max_norm).
+
+project: spectral-clipping
+method: bayes
+name: "Adam norm clip (search)"
+metric:
+  name: train/loss
+  goal: minimize
+
+parameters:
+  training.lr:
+    distribution: log_uniform_values
+    min: 0.0001
+    max: 0.1
+
+  clipping.max_norm:
+    distribution: uniform
+    min: 0.01
+    max: 10.0
+
+  optimizer.type:
+    value: adam
+
+  clipping.enabled:
+    value: true
+  clipping.type:
+    value: norm_clip
+
+run_cap: 300
+
+command:
+  - ${env}
+  - python
+  - experiments/mlp/train.py
+  - ${args_no_hyphens}

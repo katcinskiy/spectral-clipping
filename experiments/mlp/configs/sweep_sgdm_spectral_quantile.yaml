@@ -1,0 +1,42 @@
+# wandb sweep: SGDM + spectral clipping (sliding-window quantile threshold).
+# Bayesian search over (lr, quantile_q); window size is fixed.
+
+project: spectral-clipping
+method: bayes
+name: "SGDM spectral quantile (search)"
+metric:
+  name: train/loss
+  goal: minimize
+
+parameters:
+  training.lr:
+    distribution: log_uniform_values
+    min: 0.0001
+    max: 0.1
+
+  clipping.quantile_q:
+    distribution: uniform
+    min: 0.5
+    max: 0.99
+
+  optimizer.type:
+    value: sgd
+  optimizer.momentum:
+    value: 0.9
+
+  clipping.enabled:
+    value: true
+  clipping.type:
+    value: spectral_clip
+  clipping.spectral_clip_mode:
+    value: quantile
+  clipping.quantile_window_size:
+    value: 100
+
+run_cap: 100
+
+command:
+  - ${env}
+  - python
+  - experiments/mlp/train.py
+  - ${args_no_hyphens}

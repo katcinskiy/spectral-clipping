@@ -1,0 +1,28 @@
+# wandb sweep: Adam without any gradient clipping. Bayesian search over lr only.
+
+project: spectral-clipping
+method: bayes
+name: "Adam no clip (search)"
+metric:
+  name: train/loss
+  goal: minimize
+
+parameters:
+  training.lr:
+    distribution: log_uniform_values
+    min: 0.0001
+    max: 0.1
+
+  optimizer.type:
+    value: adam
+
+  clipping.enabled:
+    value: false
+
+run_cap: 100
+
+command:
+  - ${env}
+  - python
+  - experiments/mlp/train.py
+  - ${args_no_hyphens}

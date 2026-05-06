@@ -1,0 +1,48 @@
+seed: null
+
+hydra:
+  run:
+    dir: .outputs/${now:%Y-%m-%d_%H-%M-%S}
+  sweep:
+    dir: .outputs/${now:%Y-%m-%d_%H-%M-%S}
+    subdir: ${hydra.job.num}
+
+model:
+  input_dim: 100
+  hidden_dims: [100, 100, 100]
+  output_dim: 1
+
+training:
+  total_steps: 30000
+  eval_steps: 250
+  batch_size: 32
+  lr: 0.01
+  log_freq: 25
+
+optimizer:
+  type: sgd
+  momentum: 0.9
+
+dataset:
+  num_samples: 10000
+
+wandb:
+  project: spectral-clipping
+  entity: null
+
+noise:
+  enabled: true
+  pareto_scale: 5.0
+  alpha: 1.1
+  noise_rank: 1
+  prob: 0.1
+
+clipping:
+  enabled: false
+  type: norm_clip
+  max_norm: 1.0
+  spectral_clip_mode: const
+  threshold: 0.01
+  ema_coef: 0.9
+  quantile_q: 0.85
+  quantile_window_size: 100

@@ -1,0 +1,33 @@
+project: spectral-clipping-cifar10
+name: SGDM spectral const clip (bayes)
+program: experiments/cifar10_airbench/train.py
+method: bayes
+run_cap: 100
+
+metric:
+  name: sweep/mean_tta_val_acc
+  goal: maximize
+
+parameters:
+  wandb.enabled:
+    value: true
+
+  optimizer.filter_lr:
+    distribution: log_uniform_values
+    min: 0.01
+    max: 0.8
+
+  optimizer.filter_momentum:
+    value: 0.7716
+
+  clipping.threshold:
+    distribution: log_uniform_values
+    min: 0.001
+    max: 5.0
+
+command:
+  - ${env}
+  - python3
+  - ${program}
+  - --config-name=sgdm_spectral_const_clip
+  - ${args_no_hyphens}

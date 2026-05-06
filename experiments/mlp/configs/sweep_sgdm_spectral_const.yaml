@@ -1,0 +1,40 @@
+# wandb sweep: SGDM + spectral clipping (constant threshold).
+# Bayesian search over (lr, threshold).
+
+project: spectral-clipping
+method: bayes
+name: "SGDM spectral const (search)"
+metric:
+  name: train/loss
+  goal: minimize
+
+parameters:
+  training.lr:
+    distribution: log_uniform_values
+    min: 0.0001
+    max: 0.1
+
+  clipping.threshold:
+    distribution: uniform
+    min: 0.01
+    max: 10.0
+
+  optimizer.type:
+    value: sgd
+  optimizer.momentum:
+    value: 0.9
+
+  clipping.enabled:
+    value: true
+  clipping.type:
+    value: spectral_clip
+  clipping.spectral_clip_mode:
+    value: const
+
+run_cap: 300
+
+command:
+  - ${env}
+  - python
+  - experiments/mlp/train.py
+  - ${args_no_hyphens}

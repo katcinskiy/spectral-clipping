@@ -1,0 +1,40 @@
+# wandb sweep: SGDM + gradient-norm clipping. Bayesian search over (lr, max_norm).
+#
+#   wandb sweep experiments/mlp/configs/sweep_sgdm_norm_clip.yaml
+#   wandb agent <sweep-id>
+
+project: spectral-clipping
+method: bayes
+name: "SGDM norm clip (search)"
+metric:
+  name: train/loss
+  goal: minimize
+
+parameters:
+  training.lr:
+    distribution: log_uniform_values
+    min: 0.0001
+    max: 0.1
+
+  clipping.max_norm:
+    distribution: uniform
+    min: 0.01
+    max: 10.0
+
+  optimizer.type:
+    value: sgd
+  optimizer.momentum:
+    value: 0.9
+
+  clipping.enabled:
+    value: true
+  clipping.type:
+    value: norm_clip
+
+run_cap: 300
+
+command:
+  - ${env}
+  - python
+  - experiments/mlp/train.py
+  - ${args_no_hyphens}

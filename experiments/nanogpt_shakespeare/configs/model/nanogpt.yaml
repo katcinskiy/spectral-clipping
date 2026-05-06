@@ -1,0 +1,8 @@
+model_name: NanoGPT
+n_layers: 6
+n_head: 6
+n_embd: 384
+block_size: 256
+dropout: 0.2
+bias: true
+vocab_size: ${dataset.vocab_size}
