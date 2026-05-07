@@ -1,0 +1,27 @@
+project: spectral-clipping-gpt2-fineweb
+name: GPT-2 FineWeb Adam spectral const (bayes)
+method: bayes
+run_cap: 50
+
+metric:
+  name: loss
+  goal: minimize
+
+parameters:
+  optimizer.type:
+    value: adam
+  training.learning_rate:
+    distribution: log_uniform_values
+    min: 0.00003
+    max: 0.003
+  spectral.tau:
+    distribution: log_uniform_values
+    min: 0.001
+    max: 0.1
+
+command:
+  - ${env}
+  - python3
+  - experiments/gpt2_fineweb/train.py
+  - experiment=spectral
+  - ${args_no_hyphens}

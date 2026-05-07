@@ -1,0 +1,87 @@
+defaults:
+  - _self_
+  - experiment: norm
+
+model:
+  tokenizer_name: gpt2
+  base_config_name: gpt2
+  trust_remote_code: false
+  init_from_pretrained: false
+  pretrained_model_name: gpt2
+  attn_implementation: auto
+
+data:
+  tokenized_dataset_path: null
+  sequence_length: 1024
+
+training:
+  seed: null
+  output_dir: outputs/gpt2_fineweb
+
+  bf16: true
+  gradient_checkpointing: false
+  gradient_checkpointing_use_reentrant: false
+  torch_compile: true
+
+  per_device_train_batch_size: 64
+  target_global_batch_size: 128
+  gradient_accumulation_steps: null
+
+  max_train_tokens: 2000000000
+  warmup_steps: 200
+  lr_scheduler_type: cosine
+
+  learning_rate: 1.0e-2
+  weight_decay: 0.0
+
+  logging_steps: 1
+  save_strategy: "no"
+  save_steps: 1000
+  save_total_limit: 2
+  dataloader_num_workers: 8
+  dataloader_pin_memory: true
+  dataloader_persistent_workers: true
+  dataloader_prefetch_factor: 4
+  ddp_find_unused_parameters: false
+
+optimizer:
+  type: muon
+  muon:
+    momentum: 0.9
+    adamw_lr_ratio: 1.0
+    adamw_beta1: 0.9
+    adamw_beta2: 0.99
+    adamw_eps: 1.0e-8
+    exclude_names: ["wte", "wpe", "lm_head"]
+  sgdm:
+    momentum: 0.9
+  adam:
+    beta1: 0.9
+    beta2: 0.999
+    eps: 1.0e-8
+
+distributed:
+  fsdp: null
+  fsdp_config: null
+  deepspeed: null
+
+clipping:
+  mode: norm
+  max_grad_norm: 1.0
+
+spectral:
+  tau: 1.0
+  rank: 8
+  randomized_p: 5
+  randomized_n_iter: 1
+
+wandb:
+  enabled: true
+  entity: null
+  project: spectral-clipping-gpt2-fineweb
+  tags: [gpt2, fineweb]
+  mode: online
+
+hydra:
+  job:
+    chdir: false

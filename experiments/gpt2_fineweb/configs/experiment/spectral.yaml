@@ -1,0 +1,11 @@
+# @package _global_
+
+clipping:
+  mode: spectral
+  max_grad_norm: 1.0
+
+spectral:
+  tau: 0.025
+  rank: 64
+  randomized_p: 10
+  randomized_n_iter: 2

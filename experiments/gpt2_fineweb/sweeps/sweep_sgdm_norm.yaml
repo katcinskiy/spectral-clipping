@@ -1,0 +1,29 @@
+project: spectral-clipping-gpt2-fineweb
+name: GPT-2 FineWeb SGDM norm clip (bayes)
+method: bayes
+run_cap: 50
+
+metric:
+  name: loss
+  goal: minimize
+
+parameters:
+  optimizer.type:
+    value: sgdm
+  optimizer.sgdm.momentum:
+    value: 0.9
+  training.learning_rate:
+    distribution: log_uniform_values
+    min: 0.0001
+    max: 0.1
+  clipping.max_grad_norm:
+    distribution: log_uniform_values
+    min: 0.01
+    max: 5.0
+
+command:
+  - ${env}
+  - python3
+  - experiments/gpt2_fineweb/train.py
+  - experiment=norm
+  - ${args_no_hyphens}

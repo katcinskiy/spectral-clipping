@@ -1,0 +1,5 @@
+# @package _global_
+
+clipping:
+  mode: norm
+  max_grad_norm: 1.0
