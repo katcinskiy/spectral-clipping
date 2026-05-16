@@ -1,6 +1,6 @@
 # Spectral Clipping
 
-Code for the paper *Gradient Clipping Beyond Vector Norms: A Spectral Approach for Matrix-Valued Parameters*.
+Code accompanying the paper [*Gradient Clipping Beyond Vector Norms: A Spectral Approach for Matrix-Valued Parameters*](https://arxiv.org/abs/2605.11838).
 
 Instead of rescaling a gradient by its $\ell_2$ norm, we clamp every singular value of the gradient matrix above a threshold $\tau$ down to $\tau$. The repo has three threshold strategies and five experiments that reproduce the figures in the paper.
 
